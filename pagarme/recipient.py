@@ -31,9 +31,6 @@ class Recipient(AbstractResource):
         self.id = None
         self.data = {}
 
-        for key, value in kwargs.items():
-            self.data[key] = value
-
     def handle_response(self, data):
         self.id = data['id']
         self.transfer_interval = data['transfer_interval']
@@ -69,25 +66,9 @@ class Recipient(AbstractResource):
         else:
             self.error(pagarme_response.json())
 
-    def find_by_bank_account_id(self, bank_account_id=None):
-        url = self.BASE_URL + '/' + str(bank_account_id)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_transfer_enabled(self, transfer_enabled=None):
-        url = self.BASE_URL + '/' + str(transfer_enabled)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_transfer_day(self, transfer_day=None):
-        url = self.BASE_URL + '/' + str(transfer_day)
-        pagarme_response = requests.get(url, data=self.get_data())
+    def find_by(self, params=None):
+        url = self.BASE_URL
+        pagarme_response = requests.get(url, data=params)
         if pagarme_response.status_code == 200:
             self.handle_response(pagarme_response.json())
         else:
