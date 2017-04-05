@@ -24,8 +24,8 @@ class Payable(AbstractResource):
         original_payment_date=None, 
         type=None,
         payment_method=None, 
-        date_created=None, 
-        **kwargs):
+        date_created=None
+        ):
         
         self.api_key = api_key
         self.id = id
@@ -43,9 +43,6 @@ class Payable(AbstractResource):
         self.payment_method = payment_method
         self.date_created = date_created
         self.data = {}
-
-        for key, value in kwargs.items():
-            self.data[key] = value
 
     def handle_response(self,data):
         self.id = data['id']
@@ -94,57 +91,9 @@ class Payable(AbstractResource):
         else:
             self.error(pagarme_response.json())
 
-    def find_by_amount(self, amount=None):
-        url = self.BASE_URL + '/' + str(amount)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_recipient_id(self, recipient_id=None):
-        url = self.BASE_URL + '/' + str(recipient_id)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_status(self, status=None):
-        url = self.BASE_URL + '/' + str(status)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_installment(self, installment=None):
-        url = self.BASE_URL + '/' + str(installment)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_transaction_id(self, transaction_id=None):
-        url = self.BASE_URL + '/' + str(transaction_id)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_split_rule_id(self, split_rule_id=None):
-        url = self.BASE_URL + '/' + str(split_rule_id)
-        pagarme_response = requests.get(url, data=self.get_data())
-        if pagarme_response.status_code == 200:
-            self.handle_response(pagarme_response.json())
-        else:
-            self.error(pagarme_response.json())
-
-    def find_by_type(self, type=None):
-        url = self.BASE_URL + '/' + str(type)
-        pagarme_response = requests.get(url, data=self.get_data())
+    def find_by(self, params=None):
+        url = self.BASE_URL
+        pagarme_response = requests.get(url, data=params)
         if pagarme_response.status_code == 200:
             self.handle_response(pagarme_response.json())
         else:
